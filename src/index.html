@@ -1,35 +1,322 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="./assets/img/4geeks.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello Rigo with Vanilla.js</title>
+<!DOCTYPE html>
+<html lang="es">
 
-    <!-- Fontawesome is our recomended library for icons -->
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <!-- Write your HTML code here, you can delete everything withing the body tags -->
-    <div class="container-fluid text-center">
-      <h1 class="mt-5">Hello Rigo!</h1>
-      <img src="./assets/img/rigo-baby.jpg" />
-      <p class="alert alert-warning mt-4">
-        If this text is <b>not</b> centered and <b>yellow</b>, you probably have
-        an error
-      </p>
-      <div class="fixed-bottom p-4">
-        Made with ❤️ by
-        <a href="https://www.4geeksacademy.com">4Geeks Academy</a>
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript — El DOM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-light">
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Introducción al DOM</h1>
+    <p class="text-center text-muted">Cómo podemos editar la página al interactuar con ella</p>
+    <hr class="mb-5">
+
+    <div class="accordion" id="accordionJS">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingVars">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVars">
+            Resumen de la clase anterior
+          </button>
+        </h2>
+        <div id="collapseVars" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+          <div class="accordion-body">
+            <pre><code>
+              const / let → Diferentes variables
+              var → Uso
+              Tipos de datos → string, number, boolean, null, undefined
+              == / === → Diferentes comparaciones
+              array[] → Posicion no es lo mismo que índice
+              function → Definir vs. llamar
+              if / else → Tomar decisiones
+              for / while → Repeticiones
+            </code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDOMQue">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMQue">
+            ¿Qué es el DOM?
+          </button>
+        </h2>
+        <div id="collapseDOMQue" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+          <div class="accordion-body">
+
+            <h6 class="mt-4 mb-3">¿Qué es el DOM?</h6>
+            <p><strong>DOM</strong> son las siglas de <em>Document Object Model</em>. Es la representación del HTML como un árbol de objetos que JavaScript puede leer y modificar.</p>
+            
+            <p class="mb-3"><strong>El árbol del DOM:</strong></p>
+            <pre><code>document
+  └── html
+      ├── head
+      │   └── title
+      └── body
+          ├── h1
+          ├── p
+          └── button</code></pre>
+
+            <div class="alert alert-info mt-4">
+              <strong>💡 La idea clave:</strong> Cuando el navegador carga tu HTML, lo convierte en este árbol de objetos. JavaScript puede recorrerlo, leer sus valores y modificarlos en tiempo real, sin recargar la página.
+            </div>
+
+            <p class="mt-4"><strong>HTML que escribes:</strong></p>
+            <pre><code>&lt;h1 id="titulo"&gt;
+  Hola mundo
+&lt;/h1&gt;
+
+&lt;p class="intro"&gt;
+  Texto aquí
+&lt;/p&gt;</code></pre>
+
+            <p class="mt-3"><strong>Lo que JS ve:</strong></p>
+            <pre><code>// Un objeto con propiedades:
+{
+  id: "titulo",
+  textContent: "Hola mundo",
+  style: { ... },
+  classList: [ ... ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDOMSel">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMSel">
+            Seleccionar
+          </button>
+        </h2>
+        <div id="collapseDOMSel" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+          <div class="accordion-body">
+            <h6 class="mb-3">Seleccionar elementos</h6>
+            <p class="text-muted">Antes de modificar cualquier cosa, necesitamos seleccionarla. Hay tres formas principales.</p>
+
+            <h6 class="mt-4">getElementById</h6>
+            <pre><code>// Selecciona por id exacto
+// El # no va aquí
+const titulo = document.getElementById("mi-titulo");
+
+// HTML necesario:
+// &lt;h1 id="mi-titulo"&gt;...&lt;/h1&gt;</code></pre>
+
+            <h6 class="mt-4">querySelector</h6>
+            <pre><code>// Selectores CSS — el más flexible
+// Devuelve el PRIMERO que encuentre
+
+document.querySelector("h1");
+document.querySelector("#mi-id");
+document.querySelector(".mi-clase");
+document.querySelector("ul li");</code></pre>
+
+            <h6 class="mt-4">querySelectorAll</h6>
+            <pre><code>// Devuelve TODOS los que coincidan
+// → NodeList (se recorre con forEach)
+const items = document.querySelectorAll("li");
+
+items.forEach(function(item) {
+  console.log(item.textContent);
+});</code></pre>
+
+            <div class="alert alert-warning mt-4">
+              <strong>⚠️ Diferencia importante:</strong>
+              <ul class="mb-0 mt-2">
+                <li><code>getElementById("titulo")</code> — sin <code>#</code></li>
+                <li><code>querySelector("#titulo")</code> — con <code>#</code>, igual que en CSS</li>
+              </ul>
+              <p class="mt-2 mb-0"><small>Si el elemento no existe, ambos devuelven <code>null</code>. Intentar modificar <code>null</code> da error.</small></p>
+            </div>
+
+            <div class="alert alert-secondary mt-4">
+              <strong>👉 Ejercicio rápido — en consola del navegador:</strong>
+              <p class="mt-2 mb-2">Abre la consola (F12) y escribe estas líneas una a una:</p>
+              <pre><code>// 1. Selecciona el h1 de esta página
+const h1 = document.querySelector("h1");
+console.log(h1);
+
+// 2. Cambia su texto
+h1.textContent = "¡Lo cambié!";
+
+// 3. Selecciona todos los &lt;code&gt; de la página
+const codigos = document.querySelectorAll("code");
+console.log("Hay " + codigos.length + " bloques de código");</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDOMMan">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMMan">
+            Manipular
+          </button>
+        </h2>
+        <div id="collapseDOMMan" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+          <div class="accordion-body">
+            <h6 class="mb-3">Manipulación del DOM</h6>
+            <p class="text-muted">Una vez seleccionado el elemento, podemos cambiar lo que muestra.</p>
+
+            <h6 class="mt-4">textContent</h6>
+            <pre><code>const p = document.querySelector("p");
+
+// Cambiar el texto
+p.textContent = "Nuevo texto";
+
+// Leer el texto actual
+console.log(p.textContent);
+
+// ✅ Seguro: trata todo como texto</code></pre>
+
+            <h6 class="mt-4">innerHTML</h6>
+            <pre><code>const div = document.querySelector("div");
+
+// Puede incluir HTML
+div.innerHTML = "&lt;strong&gt;Negrita&lt;/strong&gt;";
+
+// ⚠️ Nunca con datos de usuarios
+// → riesgo de seguridad (XSS)</code></pre>
+
+            <div class="alert alert-info mt-4">
+              <strong>¿Cuándo usar cada uno?</strong>
+              <ul class="mb-0 mt-2">
+                <li>Usa <code>textContent</code> cuando el contenido sea texto plano.</li>
+                <li>Usa <code>innerHTML</code> solo cuando necesites insertar HTML real y controlas el contenido.</li>
+              </ul>
+            </div>
+
+            <h6 class="mt-4">Cambiar estilos — .style</h6>
+            <pre><code>const box = document.querySelector(".caja");
+
+box.style.color = "red";
+box.style.backgroundColor = "black";
+box.style.fontSize = "2rem";
+box.style.display = "none"; // ocultar
+
+// ⚠️ camelCase, no kebab-case
+// background-color → backgroundColor</code></pre>
+
+            <h6 class="mt-4">classList — clases CSS</h6>
+            <pre><code>const btn = document.querySelector("button");
+
+// Añadir una clase
+btn.classList.add("activo");
+
+// Eliminar una clase
+btn.classList.remove("activo");
+
+// Alternar (si está la quita, si no la pone)
+btn.classList.toggle("activo");
+
+// Comprobar si la tiene
+btn.classList.contains("activo");</code></pre>
+
+            <div class="alert alert-success mt-4">
+              <strong>✅ Mejor práctica:</strong> Usa <code>classList</code> en lugar de <code>.style</code> siempre que puedas. Define el estilo en CSS y solo activa/desactiva la clase desde JS. Así separas responsabilidades.
+            </div>
+
+            <h6 class="mt-4">Mini práctica — script.js</h6>
+            <p class="text-muted">Crea un botón que cambie el color de fondo de la página al hacer click:</p>
+            <pre><code>// HTML:
+// &lt;button id="btn-color"&gt;Cambiar fondo&lt;/button&gt;
+
+const btn = document.querySelector("#btn-color");
+let oscuro = false;
+
+btn.addEventListener("click", function() {
+  oscuro = !oscuro; // invierte el booleano
+  document.body.style.backgroundColor =
+    oscuro ? "#0d0f14" : "#ffffff";
+});</code></pre>
+
+            <p class="mt-3 text-muted">Y un botón para mostrar/ocultar un elemento:</p>
+            <pre><code>// HTML:
+// &lt;div id="caja"&gt;Ahora me ves...&lt;/div&gt;
+// &lt;button id="btn-toggle"&gt;Mostrar/Ocultar&lt;/button&gt;
+
+const caja = document.querySelector("#caja");
+const btnToggle = document.querySelector("#btn-toggle");
+
+btnToggle.addEventListener("click", function() {
+  caja.classList.toggle("oculto");
+});
+
+// En CSS: .oculto { display: none; }</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDOMCre">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMCre">
+            Crear / Eliminar
+          </button>
+        </h2>
+        <div id="collapseDOMCre" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+          <div class="accordion-body">
+            <h6 class="mb-3">Crear y eliminar elementos</h6>
+            <p class="text-muted">No solo podemos modificar lo que existe. Podemos crear elementos nuevos y añadirlos a la página, o eliminar los que ya están.</p>
+
+            <h6 class="mt-4">Crear y añadir</h6>
+            <pre><code>// 1. Crear el elemento
+const li = document.createElement("li");
+
+// 2. Darle contenido
+li.textContent = "Nuevo item";
+
+// 3. Añadirlo al DOM
+const lista = document.querySelector("ul");
+lista.appendChild(li);</code></pre>
+
+            <h6 class="mt-4">Eliminar</h6>
+            <pre><code>// Seleccionar y eliminar
+const elem = document.querySelector(".borrar");
+
+elem.remove(); // ← desaparece del DOM
+
+// También desde el padre
+const padre = document.querySelector("ul");
+padre.removeChild(elem);</code></pre>
+
+            <h6 class="mt-4">Ejemplo completo — lista dinámica</h6>
+            <pre><code>// HTML:
+// &lt;ul id="mi-lista"&gt;&lt;/ul&gt;
+// &lt;button id="btn-add"&gt;Añadir item&lt;/button&gt;
+
+const lista = document.querySelector("#mi-lista");
+const btnAdd = document.querySelector("#btn-add");
+let contador = 1;
+
+btnAdd.addEventListener("click", function() {
+  // 1. Crear el &lt;li&gt;
+  const nuevoItem = document.createElement("li");
+  nuevoItem.textContent = "Item " + contador;
+
+  // 2. Botón de borrar para cada item
+  const btnBorrar = document.createElement("button");
+  btnBorrar.textContent = "✕";
+  btnBorrar.addEventListener("click", function() {
+    nuevoItem.remove();
+  });
+
+  // 3. Añadir botón al item, item a la lista
+  nuevoItem.appendChild(btnBorrar);
+  lista.appendChild(nuevoItem);
+  contador++;
+});</code></pre>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Do not delete this script tag, this is what connects your HTML with the Javascript code -->
-    <script type="module" src="/app.js"></script>
-  </body>
+    
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
 </html>
