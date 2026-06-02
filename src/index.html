@@ -3,31 +3,32 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>JavaScript — El DOM</title>
+  <title>Clase 4 — El DOM</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-light">
   <div class="container py-5">
-    <h1 class="text-center mb-4">Introducción al DOM</h1>
-    <p class="text-center text-muted">Cómo podemos editar la página al interactuar con ella</p>
+
+    <h1 id="titulo-principal" class="text-center mb-2">El DOM</h1>
+    <p class="text-center text-muted mb-1">Document Object Model</p>
+    <p class="text-center text-muted small">Clase 4 — JavaScript</p>
     <hr class="mb-5">
 
-  
+    <div class="accordion" id="accordionDOM">
+
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingDOMQue">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMQue">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#seccionQue">
             ¿Qué es el DOM?
           </button>
         </h2>
-        <div id="collapseDOMQue" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+        <div id="seccionQue" class="accordion-collapse collapse show" data-bs-parent="#accordionDOM">
           <div class="accordion-body">
 
-            <h6 class="mt-4 mb-3">¿Qué es el DOM?</h6>
-            <p><strong>DOM</strong> son las siglas de <em>Document Object Model</em>. Es la representación del HTML como un árbol de objetos que JavaScript puede leer y modificar.</p>
-            
-            <p class="mb-3"><strong>El árbol del DOM:</strong></p>
+            <p><strong>DOM</strong> son las siglas de <em>Document Object Model</em>. Cuando el navegador carga el HTML, no lo lee como texto plano. Lo convierte en un <strong>árbol de objetos en memoria</strong>. Ese árbol es el DOM.</p>
+
             <pre><code>document
   └── html
       ├── head
@@ -37,209 +38,233 @@
           ├── p
           └── button</code></pre>
 
-            <div class="alert alert-info mt-4">
-              <strong>💡 La idea clave:</strong> Cuando el navegador carga tu HTML, lo convierte en este árbol de objetos. JavaScript puede recorrerlo, leer sus valores y modificarlos en tiempo real, sin recargar la página.
-            </div>
+            <p class="mt-3">Cada etiqueta se convierte en un objeto de JavaScript. Con propiedades. Con métodos. Que podéis leer y modificar.</p>
 
-            <p class="mt-4"><strong>HTML que escribes:</strong></p>
-            <pre><code>&lt;h1 id="titulo"&gt;
-  Hola mundo
-&lt;/h1&gt;
+            <pre><code>// Este h1 en HTML:
+&lt;h1 id="titulo"&gt;Hola mundo&lt;/h1&gt;
 
-&lt;p class="intro"&gt;
-  Texto aquí
-&lt;/p&gt;</code></pre>
-
-            <p class="mt-3"><strong>Lo que JS ve:</strong></p>
-            <pre><code>// Un objeto con propiedades:
+// JS lo ve como:
 {
   id: "titulo",
   textContent: "Hola mundo",
   style: { ... },
   classList: [ ... ]
 }</code></pre>
-          </div>
-        </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingDOMSel">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMSel">
-            Seleccionar
-          </button>
-        </h2>
-        <div id="collapseDOMSel" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
-          <div class="accordion-body">
-            <h6 class="mb-3">Seleccionar elementos</h6>
-            <p class="text-muted">Antes de modificar cualquier cosa, necesitamos seleccionarla. Hay tres formas principales.</p>
-
-            <h6 class="mt-4">getElementsByTagName, getElementsByClassName y getElementById</h6>
-            <pre><code>// Selecciona por tag, por clases o por id
-              const p = document.getElementsByTagName("p");
-              const titulo = document.getElementsByClassName("mi-titulo");
-const titulo = document.getElementById("mi-titulo");
-
-// HTML necesario:
-// &lt;h1 id="mi-titulo"&gt;...&lt;/h1&gt;</code></pre>
-
-            <h6 class="mt-4">querySelector</h6>
-            <pre><code>// Selectores CSS — el más flexible
-// Devuelve el PRIMERO que encuentre
-
-document.querySelector("h1");
-document.querySelector("#mi-id");
-document.querySelector(".mi-clase");
-document.querySelector("ul li");</code></pre>
-
-            <h6 class="mt-4">querySelectorAll</h6>
-            <pre><code>// Devuelve TODOS los que coincidan
-// → NodeList (se recorre con forEach)
-const items = document.querySelectorAll("li");
-
-items.forEach(function(item) {
-  console.log(item.textContent);
-});</code></pre>
-
-            <div class="alert alert-warning mt-4">
-              <strong>⚠️ Diferencia importante:</strong>
-              <ul class="mb-0 mt-2">
-                <li><code>getElementById("titulo")</code> — sin <code>#</code></li>
-                <li><code>querySelector("#titulo")</code> — con <code>#</code>, igual que en CSS</li>
-              </ul>
-              <p class="mt-2 mb-0"><small>Si el elemento no existe, ambos devuelven <code>null</code>. Intentar modificar <code>null</code> da error.</small></p>
+            <div class="alert alert-info mt-4 mb-0">
+              <strong>💡 Clave:</strong> Si podéis modificar un objeto, podéis modificar la página.
             </div>
+
           </div>
         </div>
       </div>
 
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingDOMMan">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMMan">
-            Manipular
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed intro" type="button" data-bs-toggle="collapse" data-bs-target="#seccionSeleccionar">
+            Seleccionar elementos
           </button>
         </h2>
-        <div id="collapseDOMMan" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+        <div id="seccionSeleccionar" class="accordion-collapse collapse" data-bs-parent="#accordionDOM">
           <div class="accordion-body">
-            <h6 class="mb-3">Manipulación del DOM</h6>
-            <p class="text-muted">Una vez seleccionado el elemento, podemos cambiar lo que muestra.</p>
+
+            <p class="text-muted">Antes de tocar nada hay que seleccionar el elemento. Igual que en CSS primero apuntáis al elemento y luego le aplicáis algo.</p>
+
+            <h6 class="mt-4">getElementById / getElementsByClassName / getElementsByTagName</h6>
+            <pre><code>const titulo = document.getElementById("mi-titulo");
+const parrafos = document.getElementsByTagName("p");
+const cajas    = document.getElementsByClassName("caja");</code></pre>
+
+            <h6 class="mt-4">querySelector — el más flexible</h6>
+            <pre><code>document.querySelector("h1");          // por etiqueta
+document.querySelector("#mi-titulo"); // por id  (con #)
+document.querySelector(".intro");     // por clase (con .)
+
+// Devuelve solo el PRIMERO que encuentre</code></pre>
+
+            <h6 class="mt-4">querySelectorAll — todos los que coincidan</h6>
+            <pre><code>const todos = document.querySelectorAll("p");
+// → NodeList, como un array
+</code></pre>
+
+            <div class="alert alert-warning mt-4 mb-4">
+              <strong>Error clásico:</strong> Si el elemento no existe, devuelve <code>null</code>. Intentar modificar <code>null</code> rompe el programa.
+              <pre class="mt-2 mb-0"><code>const noExiste = document.querySelector(".no-existe");
+noExiste.textContent = "Hola"; // TypeError</code></pre>
+            </div>
+
+            <div class="zona-practica">
+              <h3 id="h3-demo">Soy un h3 — id: "h3-demo"</h3>
+              <p id="parrafo-demo" class="parrafo-demo">Párrafo 1 — id: "parrafo-demo" / clase: "parrafo-demo"</p>
+              <p class="parrafo-demo">Párrafo 2 — clase: "parrafo-demo"</p>
+              <p class="parrafo-demo">Párrafo 3 — clase: "parrafo-demo"</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seccionContenido">
+            Leer y modificar contenido
+          </button>
+        </h2>
+        <div id="seccionContenido" class="accordion-collapse collapse" data-bs-parent="#accordionDOM">
+          <div class="accordion-body">
+
+            <p class="text-muted">Una vez seleccionado el elemento, podemos leer o cambiar lo que muestra.</p>
 
             <h6 class="mt-4">textContent</h6>
             <pre><code>const p = document.querySelector("p");
 
-// Cambiar el texto
-p.textContent = "Nuevo texto";
+p.textContent = "Texto nuevo";   // cambiar
+console.log(p.textContent);      // leer
 
-// Leer el texto actual
-console.log(p.textContent);
-
-// ✅ Seguro: trata todo como texto</code></pre>
+// ✅ Trata todo como texto plano
+// Si metes HTML, lo muestra literalmente</code></pre>
 
             <h6 class="mt-4">innerHTML</h6>
             <pre><code>const div = document.querySelector("div");
 
-// Puede incluir HTML
-div.innerHTML = "&lt;strong&gt;Texto importante&lt;/strong&gt;";
-</code></pre>
+// Interpreta las etiquetas HTML
+div.innerHTML = "&lt;strong&gt;Negrita&lt;/strong&gt; y &lt;em&gt;cursiva&lt;/em&gt;";
 
-            <div class="alert alert-info mt-4">
-              <strong>¿Cuándo usar cada uno?</strong>
-              <ul class="mb-0 mt-2">
-                <li>Usa <code>textContent</code> cuando el contenido sea texto plano.</li>
-                <li>Usa <code>innerHTML</code> solo cuando necesites insertar HTML real y controlas el contenido.</li>
-              </ul>
+// Usa textContent para texto normal
+// Usa innerHTML solo si necesitas meter etiquetas</code></pre>
+
+            <div class="zona-practica mt-4">
+              <p id="texto-demo">Soy el texto original — id: "texto-demo"</p>
+              <div id="html-demo" class="html-demo-box">Aquí puede entrar HTML — id: "html-demo"</div>
             </div>
 
-            <h6 class="mt-4">Cambiar estilos — .style</h6>
-            <pre><code>const box = document.querySelector(".caja");
-
-box.style.color = "red";
-box.style.backgroundColor = "black";
-box.style.fontSize = "2rem";
-box.style.display = "none"; // ocultar
-
-// ⚠️ camelCase, no kebab-case
-// background-color → backgroundColor</code></pre>
-
-            <h6 class="mt-4">classList — clases CSS</h6>
-            <pre><code>const btn = document.querySelector("button");
-
-// Añadir una clase
-btn.classList.add("activo");
-
-// Eliminar una clase
-btn.classList.remove("activo");
-
-// Alternar (si está la quita, si no la pone)
-btn.classList.toggle("activo");
-
-// Comprobar si la tiene
-btn.classList.contains("activo");</code></pre>
-
-            <div class="alert alert-success mt-4">
-              <strong>✅ Mejor práctica:</strong> Usa <code>classList</code> en lugar de <code>.style</code> siempre que puedas. Define el estilo en CSS y solo activa/desactiva la clase desde JS. Así separas responsabilidades.
-            </div>
-
-            
-
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingDOMCre">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMCre">
-            Crear / Eliminar
-          </button>
-        </h2>
-        <div id="collapseDOMCre" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
-          <div class="accordion-body">
-            <h6 class="mb-3">Crear y eliminar elementos</h6>
-            <p class="text-muted">No solo podemos modificar lo que existe. Podemos crear elementos nuevos y añadirlos a la página, o eliminar los que ya están.</p>
-
-            <h6 class="mt-4">Crear y añadir</h6>
-            <pre><code>// 1. Crear el elemento
-const li = document.createElement("li");
-
-// 2. Darle contenido
-li.textContent = "Nuevo item";
-
-// 3. Añadirlo al DOM
-const lista = document.querySelector("ul");
-lista.appendChild(li);</code></pre>
-
-            <h6 class="mt-4">Eliminar</h6>
-            <pre><code>// Seleccionar y eliminar
-const elem = document.querySelector(".borrar");
-
-elem.remove(); // ← desaparece del DOM
-
-// También desde el padre
-const padre = document.querySelector("ul");
-padre.removeChild(elem);</code></pre>
           </div>
         </div>
       </div>
+
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingDOMCre">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDOMCre">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seccionEstilos">
+            Cambiar estilos
+          </button>
+        </h2>
+        <div id="seccionEstilos" class="accordion-collapse collapse" data-bs-parent="#accordionDOM">
+          <div class="accordion-body">
+
+            <p class="text-muted">Dos formas de cambiar cómo se ve un elemento: estilos directos con <code>.style</code>, o clases CSS con <code>classList</code>.</p>
+
+            <h6 class="mt-4">.style — estilos inline</h6>
+            <pre><code>const caja = document.querySelector(".caja");
+
+caja.style.color           = "red";
+caja.style.backgroundColor = "#1a1a1a"; // ← camelCase
+caja.style.fontSize        = "2rem";
+caja.style.display         = "none";    // ocultar
+
+// ⚠️ En CSS escribís background-color (con guion)
+// En JS no podéis usar guiones → backgroundColor</code></pre>
+
+            <h6 class="mt-4">classList — la forma recomendada</h6>
+            <pre><code>const btn = document.querySelector("button");
+
+btn.classList.add("activo");         // añadir
+btn.classList.remove("activo");      // quitar
+btn.classList.toggle("activo");      // si está la quita, si no la pone
+btn.classList.contains("activo");    // true o false</code></pre>
+
+            <div class="alert alert-success mt-3">
+              <strong>✅ Buena práctica:</strong> Definid el aspecto en CSS con clases, y desde JS solo activad y desactivad esas clases. <code>.style</code> solo cuando el valor no podéis conocerlo de antemano.
+            </div>
+
+            <div class="zona-practica mt-4">
+              <div id="caja-demo" class="caja-demo">Soy una caja — id: "caja-demo" / clase disponible: "resaltado"</div>
+              <button id="boton-demo" class="btn-demo mt-3">Soy un botón — id: "boton-demo"</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seccionCrear">
+            Crear y eliminar elementos
+          </button>
+        </h2>
+        <div id="seccionCrear" class="accordion-collapse collapse" data-bs-parent="#accordionDOM">
+          <div class="accordion-body">
+
+            <p class="text-muted">No solo modificamos lo que ya existe. Podemos crear elementos desde cero y añadirlos al DOM. Así funcionan las listas de tareas, los chats, cualquier app.</p>
+
+            <h6 class="mt-4">Crear y añadir — siempre tres pasos</h6>
+            <pre><code>// 1. Crear el elemento (existe en memoria, pero no se ve)
+const nuevoP = document.createElement("p");
+
+// 2. Configurarlo
+nuevoP.textContent = "Soy nuevo";
+
+// 3. Añadirlo al DOM
+document.body.appendChild(nuevoP);</code></pre>
+
+            <h6 class="mt-4">Eliminar</h6>
+            <pre><code>const elem = document.querySelector("#borrar-esto");
+elem.remove(); // desaparece del DOM</code></pre>
+
+            <div class="zona-practica mt-4">
+              <ul id="lista-demo">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li id="item-borrable">Item borrable — id: "item-borrable"</li>
+              </ul>
+              <p class="practica-meta">Lista — id: "lista-demo"</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seccionEventos">
             Eventos
           </button>
         </h2>
-        <div id="collapseDOMCre" class="accordion-collapse collapse show" data-bs-parent="#accordionJS">
+        <div id="seccionEventos" class="accordion-collapse collapse" data-bs-parent="#accordionDOM">
           <div class="accordion-body">
-            <h6 class="mb-3">Vigilar lo que hace el usuario</h6>
-            <p class="text-muted">Consta de tres partes. Seleccionar el elemento y añadirle un evento, indicarle el tipo de evento que tiene que tener en cuenta y lo que debe hacer (la función).</p>
-            <pre><code>// Eventos más comunes
-click          El usuario hace clic en un elemento.
-dblclick       El usuario hace doble clic en un elemento.
-mousedown      El usuario presiona un botón del ratón sobre un elemento.
-mouseup        El usuario suelta un botón del ratón sobre un elemento.
-mousemove      El usuario mueve el ratón sobre un elemento.
-mouseenter     El ratón entra en el área de un elemento.
-mouseleave     El ratón sale del área de un elemento.
-</code></pre>
+
+            <p class="text-muted">Un evento es cualquier cosa que ocurre en la página: un clic, mover el ratón, pulsar una tecla. JavaScript puede escuchar esos eventos y reaccionar.</p>
+
+            <pre><code>// Tres partes:
+// 1. El elemento a vigilar
+// 2. Qué evento escuchar (entre comillas)
+// 3. Qué hacer cuando ocurra (función)
+
+elemento.addEventListener("click", function() {
+  // esto se ejecuta cuando el usuario hace clic
+});</code></pre>
+
+            <h6 class="mt-4">Eventos más comunes</h6>
+            <pre><code>click        → el usuario hace clic
+dblclick     → doble clic
+mouseenter   → el ratón entra en el elemento
+mouseleave   → el ratón sale del elemento
+mousemove    → el ratón se mueve sobre el elemento
+mousedown    → presiona el botón del ratón
+mouseup      → suelta el botón del ratón</code></pre>
+
+            <div class="zona-practica mt-4">
+              <div id="caja-eventos" class="caja-demo">Interactúa conmigo — id: "caja-eventos"</div>
+              <p id="log-eventos" class="log-eventos mt-2">Esperando eventos… — id: "log-eventos"</p>
+            </div>
+
           </div>
         </div>
       </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
 
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
